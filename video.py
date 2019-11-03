@@ -1,6 +1,6 @@
 from media import *
 
-class VideoJSON(Media):
+class VideoInfo(Media):
 	def __init__(self, html):
 		super().__init__(html)
 		m = re.search('width\":(.+?),', html)
@@ -14,5 +14,5 @@ class VideoJSON(Media):
 
 	def __str__(self):
 		return super().__str__()+\
-		f'\nwidth: {self.width}\nheight: {self.height}\nfps: {self.fps}\n'+\
+		f'width: {self.width}\nheight: {self.height}\nfps: {self.fps}\n'+\
 		f'qualityLabel: {self.qualityLabel}'
