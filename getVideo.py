@@ -1,4 +1,5 @@
 import urllib.request
+import urllib.parse
 import re
 
 class JSON:
@@ -53,4 +54,39 @@ with urllib.request.urlopen(url) as response:
 	i = html.index('{\\\"itag\\\":243'.encode())
 	j = html[i:].index(',{\\\"itag\\\":'.encode())
 	json = JSON(html[i:i+j].decode().translate({ord('\\'): None}))
-	print(json.cipher)
+	print(json)
+	
+	print('\ncipher size -> '+str(len(json.cipher)))
+	parsed_cipher = urllib.parse.unquote(json.cipher)
+
+	if parsed_cipher.index('s=') < parsed_cipher.index('url='):
+		url = re.search('url=(.+)', parsed_cipher).group(1)
+		m = re.search('s=(.+?)LAu0026', parsed_cipher)
+		#print('OK1')
+	else:
+		url = re.search('url=(.+?)u0026', parsed_cipher).group(1)
+		m = re.search('u0026s=(.+LA?)LA', parsed_cipher)
+		#print('OK2')
+	
+	sig = list(m.group(1))
+	print('\nACTUAL URL -> '+url)
+	print('reversed_sig -> '+''.join(sig))
+	sig.reverse()
+	sig = ''.join(sig)
+	print('sig -> '+sig)
+
+	m = re.search('(.+?)==(.+)', sig)
+	if m:
+		char1 = m.group(1)
+		if m.group(2).startswith('='):
+			char2 = m.group(2)[1]
+		else:
+			char2 = m.group(2)
+		sig = list(sig)
+		sig[-1] = ''
+		i = str(sig).find('=')
+		j = str(sig).lower().rfind(char1.lower())
+		#sig[i] = sig[j]
+		#sig[j] = char2
+		sig = ''.join(sig)
+		print('new sig -> '+sig)
