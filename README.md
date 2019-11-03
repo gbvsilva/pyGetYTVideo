@@ -1,3 +1,3 @@
 # pyGetYTVideo
 
-Python script for get video from YouTube
+Python script to get video from YouTube
