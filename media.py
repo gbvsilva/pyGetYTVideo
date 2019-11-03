@@ -59,30 +59,25 @@ class Media():
 			if parsed_cipher.index('s=') < parsed_cipher.index('url='):
 				url = re.search('url=(.+)', parsed_cipher).group(1)
 				m = re.search('s=(.+?)LAu0026', parsed_cipher)
-				#print('OK1')
 			else:
 				url = re.search('url=(.+?)u0026', parsed_cipher).group(1)
 				m = re.search('u0026s=(.+LA?)LA', parsed_cipher)
-				#print('OK2')
+			
 			sig = list(m.group(1))
-			#print('\nACTUAL URL -> '+url)
-			#print('reversed_sig -> '+''.join(sig))
 			sig.reverse()
 			sig = ''.join(sig)
-			#print('sig -> '+sig+' (size='+str(len(sig))+')')
-
 			sig = list(sig)
 			char1 = sig[-1]
 			del sig[-1]
 			del sig[-1]
 			char2 = sig[-12]
 			sig[-12] = char1
+			
 			if len(sig) == 100:
 				sig[45] = char2
 			elif len(sig) == 104:
 				sig[sig.index('=')] = char2
 			sig = ''.join(sig)
-			#print('new sig -> '+sig)
 			self.url = url+'&sig='+sig
 		else:
 			self.url = self.url.replace('u0026', '&')

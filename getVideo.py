@@ -12,13 +12,12 @@ with urllib.request.urlopen(url) as response:
 	
 	i = html.index('{\\\"itag\\\":140'.encode())
 	j = html[i:].index('}]}'.encode())+1
-	#print('AUDIO HTML -> '+str(html[i:i+j]))
 	audio_info = AudioInfo(html[i:i+j].decode().translate({ord('\\'): None}))
+
 	print("==== Video Info ====")
 	print(video_info)
 	print("\n==== Audio Info ====")
 	print(audio_info)
-	#print('\ncipher size -> '+str(len(video_info.cipher)))
 	
 	video_info.genURL()
 	print('\nVideo_url: '+video_info.url)
