@@ -21,6 +21,6 @@ with urllib.request.urlopen(url) as response:
 	# print(audio_info)
 	
 	video.genURL()
-	print('\nVideo_url: '+video.url)
+	print('Video_url: {}'.format(video.url if video.url else 'None'))
 	# audio_info.genURL()
 	# print('Audio_url: '+audio_info.url)
