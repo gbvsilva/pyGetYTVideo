@@ -65,7 +65,6 @@ class Media():
 			
 			sig = list(m.group(1))
 			sig.reverse()
-			#print('sig -> '+''.join(sig))
 			char1 = ''
 			char2 = ''
 			if len(sig) == 104 and '=' in sig:
@@ -74,20 +73,11 @@ class Media():
 				sig[-1] = '='
 				sig[53] = char1
 				sig[43] = char2
-			
-			# char1 = sig[-1]
-			# del sig[-1]
-			# del sig[-1]
-			# char2 = sig[-12]
-			# sig[-12] = char1
-			# if '=' in sig:
-			# 	if len(sig) == 104:
-			# 		sig[sig.index('=')] = char2
-				
-			# else:
-			# 	sig[45] = char2
-			sig = ''.join(sig)
-			self.url = url+'&sig='+sig
+				sig = ''.join(sig)
+				self.url = url+'&sig='+sig
+			else:
+				print('Fail on get content!')
+				self.url = None
 		else:
 			self.url = self.url.replace('u0026', '&')
 
