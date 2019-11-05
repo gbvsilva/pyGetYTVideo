@@ -65,18 +65,27 @@ class Media():
 			
 			sig = list(m.group(1))
 			sig.reverse()
-			sig = ''.join(sig)
-			sig = list(sig)
-			char1 = sig[-1]
-			del sig[-1]
-			del sig[-1]
-			char2 = sig[-12]
-			sig[-12] = char1
+			#print('sig -> '+''.join(sig))
+			char1 = ''
+			char2 = ''
+			if len(sig) == 104 and '=' in sig:
+				char1 = sig[-1]
+				char2 = sig[53]
+				sig[-1] = '='
+				sig[53] = char1
+				sig[43] = char2
 			
-			if len(sig) == 100:
-				sig[45] = char2
-			elif len(sig) == 104:
-				sig[sig.index('=')] = char2
+			# char1 = sig[-1]
+			# del sig[-1]
+			# del sig[-1]
+			# char2 = sig[-12]
+			# sig[-12] = char1
+			# if '=' in sig:
+			# 	if len(sig) == 104:
+			# 		sig[sig.index('=')] = char2
+				
+			# else:
+			# 	sig[45] = char2
 			sig = ''.join(sig)
 			self.url = url+'&sig='+sig
 		else:
