@@ -3,7 +3,8 @@ import urllib.parse
 
 class Media():
 	"""docstring for Media"""
-	def __init__(self, html):
+	def __init__(self, link, html):
+		self.urlType = 'mobile' if link.startswith("https://m.youtube") else 'desktop'
 		m = re.search('itag\":(.+?),', html)
 		self.itag = m.group(1)
 		m = re.search('mimeType\":\"(.+?)\",', html)
@@ -54,7 +55,7 @@ class Media():
 			self.url = re.search('url\":\"(.+?)\"', html).group(1)
 
 	def genURL(self):
-		if self.cipher:
+		if self.cipher and self.urlType == 'desktop':
 			parsed_cipher = urllib.parse.unquote(self.cipher)
 			if parsed_cipher.index('s=') < parsed_cipher.index('url='):
 				url = re.search('url=(.+)', parsed_cipher).group(1)
@@ -67,6 +68,7 @@ class Media():
 			sig.reverse()
 			char1 = ''
 			char2 = ''
+			# 104 for desktop YT website
 			if len(sig) == 104 and '=' in sig:
 				char1 = sig[-1]
 				char2 = sig[53]
@@ -78,6 +80,41 @@ class Media():
 			else:
 				print('Fail on get content!')
 				self.url = None
+		elif self.cipher and self.urlType == 'mobile':
+			parsed_cipher = urllib.parse.unquote(self.cipher)
+			if parsed_cipher.index('s=') < parsed_cipher.index('url='):
+				url = re.search('url=(.+)', parsed_cipher).group(1)
+				m = re.search('s=(.+?)u0026', parsed_cipher)
+			else:
+				url = re.search('url=(.+?)u0026', parsed_cipher).group(1)
+				if parsed_cipher.index('26s=') < parsed_cipher.index('sp=sig'):
+					m = re.search('u0026s=(.+?)u0026', parsed_cipher)
+				else:
+					m = re.search('u0026s=(.*)', parsed_cipher)
+
+			sig = list(m.group(1))
+			sig.reverse()
+			print("sig -> "+''.join(sig))
+			char1 = ''
+			char2 = ''
+			# 106 for mobile YT website
+			if sig.index("=") > -1 and sig.index("=") < 50:
+				sig[sig.index("=")] = sig[-1]
+				sig[-1] = '='
+				sig[41] = sig[0]
+			else:
+				sig[89] = sig[105]
+				char1 = sig[52]
+				#char2 = sig[52]
+				sig[52] = sig[0]
+				sig[40] = char1
+				del sig[-3:-1]
+				del sig[-1]
+			del sig[0:3]
+			sig[0] = 'A'
+			sig = ''.join(sig)
+			print("new sig -> "+sig)
+			self.url = url+'&sig='+sig
 		else:
 			self.url = self.url.replace('u0026', '&')
 

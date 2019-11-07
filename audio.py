@@ -2,8 +2,8 @@ from media import *
 
 class AudioInfo(Media):
 	"""docstring for AudioInfo"""
-	def __init__(self, html):
-		super().__init__(html)
+	def __init__(self, link, html):
+		super().__init__(link, html)
 		m = re.search('audioQuality\":\"(.+?)\",', html)
 		self.audioQuality = m.group(1)
 		m = re.search('audioSampleRate\":\"(.+?)\",', html)

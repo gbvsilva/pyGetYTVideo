@@ -1,8 +1,8 @@
 from media import *
 
 class VideoInfo(Media):
-	def __init__(self, html):
-		super().__init__(html)
+	def __init__(self, link, html):
+		super().__init__(link, html)
 		m = re.search('width\":(.+?),', html)
 		self.width = m.group(1)
 		m = re.search('height\":(.+?),', html)
