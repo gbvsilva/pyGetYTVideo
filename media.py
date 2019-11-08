@@ -119,9 +119,9 @@ class Media():
 			self.url = self.url.replace('u0026', '&')
 
 	def __str__(self):
-		out = f'itag: {self.itag}\nmimeType: {self.mimeType}\nbitrate: {self.bitrate}\n'+\
-		f'lastModified: {self.lastModified}\nquality: {self.quality}\n'+\
-		f'projectionType: {self.projectionType}\n'
+		out = 'itag: '+self.itag+'\nmimeType: '+self.mimeType+'\nbitrate: '+self.bitrate+\
+		'\nlastModified: '+self.lastModified+'\nquality: '+self.quality+\
+		'\nprojectionType: '+self.projectionType+'\n'
 		out += 'initRange: {}'.format(str(self.initRange)+'\n' if self.initRange else 'None\n')
 		out += 'indexRange: {}'.format(str(self.indexRange)+'\n' if self.indexRange else 'None\n')
 		out += 'contentLength: {}'.format(self.contentLength+'\n' if self.contentLength else 'None\n')

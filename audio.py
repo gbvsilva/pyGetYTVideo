@@ -13,5 +13,5 @@ class AudioInfo(Media):
 
 	def __str__(self):
 		return super().__str__()+\
-		f'audioQuality: {self.audioQuality}\naudioSampleRate: '+\
-		f'{self.audioSampleRate}\naudioChannels: {self.audioChannels}'
+		'audioQuality: '+self.audioQuality+'\naudioSampleRate: '+\
+		self.audioSampleRate+'\naudioChannels: '+self.audioChannels+'\n';

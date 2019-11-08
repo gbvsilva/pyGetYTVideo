@@ -14,5 +14,5 @@ class VideoInfo(Media):
 
 	def __str__(self):
 		return super().__str__()+\
-		f'width: {self.width}\nheight: {self.height}\nfps: {self.fps}\n'+\
-		f'qualityLabel: {self.qualityLabel}'
+		'width: '+self.width+'\nheight: '+self.height+'\nfps: '+self.fps+\
+		'\nqualityLabel: '+self.qualityLabel+'\n';
