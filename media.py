@@ -55,66 +55,40 @@ class Media():
 			self.url = re.search('url\":\"(.+?)\"', html).group(1)
 
 	def genURL(self):
-		if self.cipher and self.urlType == 'desktop':
+		if self.url == None:
 			parsed_cipher = urllib.parse.unquote(self.cipher)
+			url = ''
+			m = ''
 			if parsed_cipher.index('s=') < parsed_cipher.index('url='):
-				url = re.search('url=(.+)', parsed_cipher).group(1)
-				m = re.search('s=(.+?)LAu0026', parsed_cipher)
+				m = re.search('s=(.+?)u0026', parsed_cipher)
+				if parsed_cipher.index('url=') < parsed_cipher.index('sp=sig'):
+					url = re.search('url=(.+)u0026', parsed_cipher).group(1)
+				else:
+					url = re.search('url=(.+)', parsed_cipher).group(1)
 			else:
 				url = re.search('url=(.+?)u0026', parsed_cipher).group(1)
-				m = re.search('u0026s=(.+LA?)LA', parsed_cipher)
+				if parsed_cipher.index('s=') < parsed_cipher.index('sp=sig'):
+					m = re.search('u0026s=(.+?)u0026', parsed_cipher)
+				else:
+					m = re.search('u0026s=(.+?)', parsed_cipher)
 			
 			sig = list(m.group(1))
-			sig.reverse()
+			m = re.search('LgxI2', ''.join(sig))
+			if m.group() == None:
+				sig.reverse()
+
 			char1 = ''
-			char2 = ''
-			# 104 for desktop YT website
-			if len(sig) == 104 and '=' in sig:
+			#char2 = ''
+			if sig.index('=') > -1 and sig.index('=') < 100:
 				char1 = sig[-1]
-				char2 = sig[53]
+				sig[sig.index('=')] = char1
 				sig[-1] = '='
-				sig[53] = char1
-				sig[43] = char2
+				del sig[0]
 				sig = ''.join(sig)
 				self.url = url+'&sig='+sig
 			else:
 				print('Fail on get content!')
 				self.url = None
-		elif self.cipher and self.urlType == 'mobile':
-			parsed_cipher = urllib.parse.unquote(self.cipher)
-			if parsed_cipher.index('s=') < parsed_cipher.index('url='):
-				url = re.search('url=(.+)', parsed_cipher).group(1)
-				m = re.search('s=(.+?)u0026', parsed_cipher)
-			else:
-				url = re.search('url=(.+?)u0026', parsed_cipher).group(1)
-				if parsed_cipher.index('26s=') < parsed_cipher.index('sp=sig'):
-					m = re.search('u0026s=(.+?)u0026', parsed_cipher)
-				else:
-					m = re.search('u0026s=(.*)', parsed_cipher)
-
-			sig = list(m.group(1))
-			sig.reverse()
-			print("sig -> "+''.join(sig))
-			char1 = ''
-			char2 = ''
-			# 106 for mobile YT website
-			if sig.index("=") > -1 and sig.index("=") < 50:
-				sig[sig.index("=")] = sig[-1]
-				sig[-1] = '='
-				sig[41] = sig[0]
-			else:
-				sig[89] = sig[105]
-				char1 = sig[52]
-				#char2 = sig[52]
-				sig[52] = sig[0]
-				sig[40] = char1
-				del sig[-3:-1]
-				del sig[-1]
-			del sig[0:3]
-			sig[0] = 'A'
-			sig = ''.join(sig)
-			print("new sig -> "+sig)
-			self.url = url+'&sig='+sig
 		else:
 			self.url = self.url.replace('u0026', '&')
 
