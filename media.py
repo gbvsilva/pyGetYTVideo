@@ -83,13 +83,12 @@ class Media():
 				sig[41] = sig[0]
 				del sig[0:3]
 				sig[0] = 'A'
-				self.url = url+'&sig='+''.join(sig)
 			else:
 				if sig.index('=') > -1 and sig.index('=') < 100:
 					sig[sig.index('=')] = sig[-1]
 					sig[-1] = '='
 					del sig[0]
-					self.url = url+'&sig='+''.join(sig)
+			self.url = url+'&sig='+''.join(sig)
 		else:
 			self.url = self.url.replace('u0026', '&')
 
