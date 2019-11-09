@@ -55,7 +55,7 @@ class Media():
 			self.url = re.search('url\":\"(.+?)\"', html).group(1)
 
 	def genURL(self):
-		print('genURL')
+		
 		if self.url == None:
 			parsed_cipher = urllib.parse.unquote(self.cipher)
 			url = ''
