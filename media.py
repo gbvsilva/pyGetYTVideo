@@ -55,6 +55,7 @@ class Media():
 			self.url = re.search('url\":\"(.+?)\"', html).group(1)
 
 	def genURL(self):
+		print('genURL')
 		if self.url == None:
 			parsed_cipher = urllib.parse.unquote(self.cipher)
 			url = ''
@@ -76,19 +77,19 @@ class Media():
 			m = re.search('LgxI2', ''.join(sig))
 			if m.group() == None:
 				sig.reverse()
-
-			char1 = ''
-			#char2 = ''
-			if sig.index('=') > -1 and sig.index('=') < 100:
-				char1 = sig[-1]
-				sig[sig.index('=')] = char1
-				sig[-1] = '='
-				del sig[0]
-				sig = ''.join(sig)
-				self.url = url+'&sig='+sig
+				char1 = sig[36]
+				sig[36] = sig[-1]
+				sig[-1] = char1
+				sig[41] = sig[0]
+				del sig[0:3]
+				sig[0] = 'A'
+				self.url = url+'&sig='+''.join(sig)
 			else:
-				print('Fail on get content!')
-				self.url = None
+				if sig.index('=') > -1 and sig.index('=') < 100:
+					sig[sig.index('=')] = sig[-1]
+					sig[-1] = '='
+					del sig[0]
+					self.url = url+'&sig='+''.join(sig)
 		else:
 			self.url = self.url.replace('u0026', '&')
 
