@@ -75,7 +75,7 @@ class Media():
 			
 			sig = list(m.group(1))
 			m = re.search('LgxI2', ''.join(sig))
-			if m.group() == None:
+			if m:
 				sig.reverse()
 				char1 = sig[36]
 				sig[36] = sig[-1]

@@ -1,4 +1,6 @@
+# python3
 import urllib.request
+import subprocess
 from media import *
 	
 link = input()
@@ -20,4 +22,8 @@ while True:
 		video.genURL()
 		if video.url:
 			print('Video_url: {}'.format(video.url if video.url else 'None'))
+			open_video = input('\nOpen video? (Y/N)')
+			if open_video.lower() == 's':
+				chrome = '/usr/bin/google-chrome'
+				subprocess.call([chrome, video.url])
 			break
