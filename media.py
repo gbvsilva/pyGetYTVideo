@@ -73,22 +73,17 @@ class Media():
 				else:
 					m = re.search('u0026s=(.+?)', parsed_cipher)
 			
-			sig = list(m.group(1))
-			m = re.search('LgxI2', ''.join(sig))
 			if m:
-				sig.reverse()
-				char1 = sig[36]
-				sig[36] = sig[-1]
-				sig[-1] = char1
-				sig[41] = sig[0]
-				del sig[0:3]
-				sig[0] = 'A'
-			else:
-				if sig.index('=') > -1 and sig.index('=') < 100:
-					sig[sig.index('=')] = sig[-1]
+				sig = list(m.group(1))
+				m = re.search('2IxgLA', ''.join(sig))
+				if m:
+					sig.reverse()
+				if ''.join(sig).startswith('ALgxI2') and '=' in sig and sig.index('=') < 100:	
+					sig[sig.index('=')] = sig[39]
+					sig[39] = sig[-1]
+					del sig[-4:-1]
 					sig[-1] = '='
-					del sig[0]
-			self.url = url+'&sig='+''.join(sig)
+					self.url = url+'&sig='+''.join(sig)
 		else:
 			self.url = self.url.replace('u0026', '&')
 

@@ -1,6 +1,6 @@
 # python3
 import urllib.request
-import subprocess
+from subprocess import Popen, PIPE
 from media import *
 	
 link = input()
@@ -22,8 +22,10 @@ while True:
 		video.genURL()
 		if video.url:
 			print('Video_url: {}'.format(video.url if video.url else 'None'))
-			open_video = input('\nOpen video? (Y/N)')
-			if open_video.lower() == 's':
-				chrome = '/usr/bin/google-chrome'
-				subprocess.call([chrome, video.url])
+			open_video = input('\nOpen video? (Y/N) ')
+			if open_video.lower() == 'y':
+				p1 = Popen(['which', 'x-www-browser'], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+				browser = p1.stdout.read()
+				browser = browser[:-1] # removing new line
+				p2 = Popen([browser, video.url], stdout=PIPE, stderr=PIPE, stdin=PIPE)
 			break
