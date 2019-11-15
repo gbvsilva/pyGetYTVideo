@@ -75,13 +75,14 @@ class Media():
 			
 			if m:
 				sig = list(m.group(1))
-				m = re.search('2IxgLA', ''.join(sig))
+				m = re.search('2IxgL', ''.join(sig))
 				if m:
 					sig.reverse()
-				if ''.join(sig).startswith('ALgxI2') and '=' in sig and sig.index('=') < 100:	
-					sig[sig.index('=')] = sig[39]
-					sig[39] = sig[-1]
-					del sig[-4:-1]
+				if url.startswith('https://r2'):
+					sig[sig.index('=')] = sig[-1]
+					sig[34] = sig[67]
+					sig[67] = sig[0]
+					sig[0] = 'A'
 					sig[-1] = '='
 					self.url = url+'&sig='+''.join(sig)
 		else:
