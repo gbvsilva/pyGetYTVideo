@@ -85,6 +85,8 @@ class Media():
 					sig[0] = 'A'
 					sig[-1] = '='
 					self.url = url+'&sig='+''.join(sig)
+				#elif url.startswith('https://r1'):
+
 		else:
 			self.url = self.url.replace('u0026', '&')
 
