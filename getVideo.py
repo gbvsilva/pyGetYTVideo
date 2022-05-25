@@ -4,26 +4,23 @@ import re
 from subprocess import Popen, PIPE
 from media import *
 	
-
 if __name__ == '__main__':
 	while True:
 		link = input('Digite uma URL do YouTube: ')
 		user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
 		headers = {'User-Agent': user_agent}
 		video_id = None
-		if link.startswith('https://www.youtube.com/watch?v=') or link.startswith('https://youtube.com/watch?v='):
-			video_id = re.search('v=(.+)', link).group(1)
-		elif link.startswith('https://youtu.be/'):
-			video_id = re.search('be/(.+)', link).group(1)
-		if video_id:
-			response = requests.get('https://www.youtube.com/watch?v='+video_id, data=None, headers=headers)
+		if link.startswith('https://www.youtube.com/watch?v=') or link.startswith('https://youtube.com/watch?v=') \
+			or link.startswith('https://youtu.be/'):
+			
+			response = requests.get(link, data=None, headers=headers)
 			
 			html = response.text
 			try:
 				video_src = html.split('itag":18,"url":"')[1].split('"')[0].replace('\\u0026', '&')
 			except:
 				print('Video com direitos autorais!')
-				#TODO: fazer captura em separado do audio e do video
+				#TODO: talvez seja preciso fazer captura em separado do audio e do video
 				continue
 	
 			print('Video Source: %s' % video_src)
