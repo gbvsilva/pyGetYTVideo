@@ -24,7 +24,7 @@ if __name__ == '__main__':
 				continue
 	
 			print('Video Source: %s' % video_src)
-			open_video = input('\nAbrir video? (y/N) ')
+			open_video = input('\nAbrir video? (Y/n) ')
 			if open_video.lower() == 'n':
 				break
 			else:
